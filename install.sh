@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 安装目录
-INSTALL_DIR="/usr/local/bin"
+INSTALL_DIR="/usr/bin"
 SUIM_REPO="https://raw.githubusercontent.com/nextuser/suim/main"
 
 # 颜色输出
