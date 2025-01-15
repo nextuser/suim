@@ -35,7 +35,7 @@ list_remote_versions() {
     curl -s https://api.github.com/repos/MystenLabs/sui/releases | 
     grep '"tag_name":' | 
     sed -E 's/.*"([^"]+)".*/\1/' | 
-    grep -E '^(mainnet|testnet)-' | 
+    grep -E '^(mainnet|testnet|devnet)-' | 
     sort -u -r
 }
 
