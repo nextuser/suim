@@ -35,7 +35,7 @@ list_remote_versions() {
     curl -s https://api.github.com/repos/MystenLabs/sui/releases | 
     grep '"tag_name":' | 
     sed -E 's/.*"([^"]+)".*/\1/' | 
-    grep -E '^(mainnet|testnet)-' | 
+    grep -E '^(mainnet|testnet|devnet)-' | 
     sort -u -r
 }
 
@@ -110,7 +110,7 @@ case "$1" in
     "version")
         show_version
         ;;
-    "version-remote")
+    "versions")
         list_remote_versions
         ;;
     "install")
@@ -138,7 +138,7 @@ case "$1" in
         echo "Usage:"
         echo "  suim list              # List installed versions"
         echo "  suim version           # Show current version"
-        echo "  suim version-remote    # List available remote versions"
+        echo "  suim versions    # List available remote versions"
         echo "  suim install <version> # Install specified version"
         echo "  suim use <version>     # Switch to specified version"
         echo "  suim uninstall <version> # Uninstall specified version"
