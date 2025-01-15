@@ -12,7 +12,7 @@ suim version
 
 ## 1.3 命令: 显示下载网页上可下载的版本列表
 ```
-sui version-remote
+sui versions
 ```
 需要过滤掉重复的版本,显示的版本名称类似
 mainnet-1.40.3 
