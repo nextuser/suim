@@ -4,42 +4,42 @@ SUIM_HOME="$HOME/.suim"
 VERSIONS_DIR="$SUIM_HOME/versions"
 CURRENT_VERSION_FILE="$SUIM_HOME/current"
 
-# 创建必要的目录
+# Create necessary directories
 mkdir -p "$VERSIONS_DIR"
 
-# 获取当前系统信息
+# Get current system info
 get_system_info() {
     echo "ubuntu-x86_64"
 }
 
-# 显示当前版本
+# Show current version
 show_version() {
     if [ -f "$CURRENT_VERSION_FILE" ]; then
         cat "$CURRENT_VERSION_FILE"
     else
-        echo "未设置当前版本"
+        echo "No version currently set"
     fi
 }
 
-# 列出本地已安装的版本
+# List installed versions
 list_versions() {
-    echo "已安装的版本："
+    echo "Installed versions:"
     if [ -d "$VERSIONS_DIR" ]; then
         ls -1 "$VERSIONS_DIR"
     fi
 }
 
-# 获取远程可用版本
+# Get available remote versions
 list_remote_versions() {
-    echo "获取远程版本列表..."
+    echo "Fetching remote versions..."
     curl -s https://api.github.com/repos/MystenLabs/sui/releases | 
     grep '"tag_name":' | 
     sed -E 's/.*"([^"]+)".*/\1/' | 
-    grep -E '^(mainnet|testnet|devnet)-' | 
+    grep -E '^(mainnet|testnet)-' | 
     sort -u -r
 }
 
-# 下载并安装指定版本
+# Download and install specified version
 install_version() {
     local version=$1
     local system_info=$(get_system_info)
@@ -47,62 +47,62 @@ install_version() {
     local target_dir="$VERSIONS_DIR/${version}"
     local temp_file="/tmp/sui-${version}.tgz"
 
-    # 检查版本是否已安装
+    # Check if version is already installed
     if [ -d "$target_dir" ]; then
-        echo "版本 ${version} 已安装"
+        echo "Version ${version} is already installed"
         return 1
     fi
 
-    echo "下载 ${version}..."
+    echo "Downloading ${version}..."
     wget --show-progress -O "$temp_file" "$download_url"
 
     if [ $? -eq 0 ]; then
         mkdir -p "$target_dir"
         tar xzf "$temp_file" -C "$target_dir"
         rm "$temp_file"
-        echo "安装完成：${version}"
+        echo "Installation complete: ${version}"
     else
-        echo "下载失败"
+        echo "Download failed"
         rm -f "$temp_file"
         rm -rf "$target_dir"
         return 1
     fi
 }
 
-# 切换使用版本
+# Switch to specified version
 use_version() {
     local version=$1
     local version_dir="$VERSIONS_DIR/${version}"
 
     if [ ! -d "$version_dir" ]; then
-        echo "版本 ${version} 未安装"
+        echo "Version ${version} is not installed"
         return 1
     fi
 
     echo "$version" > "$CURRENT_VERSION_FILE"
-    echo "已切换到版本：${version}"
+    echo "Switched to version: ${version}"
 }
 
-# 卸载指定版本
+# Uninstall specified version
 uninstall_version() {
     local version=$1
     local version_dir="$VERSIONS_DIR/${version}"
 
     if [ ! -d "$version_dir" ]; then
-        echo "版本 ${version} 未安装"
+        echo "Version ${version} is not installed"
         return 1
     fi
 
     rm -rf "$version_dir"
-    echo "已删除版本：${version}"
+    echo "Deleted version: ${version}"
 
-    # 如果删除的是当前使用的版本，清除当前版本记录
+    # Clear current version if it's the one being uninstalled
     if [ "$(cat "$CURRENT_VERSION_FILE" 2>/dev/null)" = "$version" ]; then
         rm -f "$CURRENT_VERSION_FILE"
     fi
 }
 
-# 主命令处理
+# Main command handler
 case "$1" in
     "list")
         list_versions
@@ -115,33 +115,38 @@ case "$1" in
         ;;
     "install")
         if [ -z "$2" ]; then
-            echo "请指定要安装的版本"
+            echo "Please specify version to install"
             exit 1
         fi
         install_version "$2"
         ;;
     "use")
         if [ -z "$2" ]; then
-            echo "请指定要使用的版本"
+            echo "Please specify version to use"
             exit 1
         fi
         use_version "$2"
         ;;
     "uninstall")
         if [ -z "$2" ]; then
-            echo "请指定要删除的版本"
+            echo "Please specify version to uninstall"
             exit 1
         fi
         uninstall_version "$2"
         ;;
     *)
-        echo "用法："
-        echo "  suim list              # 列出已安装的版本"
-        echo "  suim version           # 显示当前版本"
-        echo "  suim version-remote    # 显示可用的远程版本"
-        echo "  suim install <版本>     # 安装指定版本"
-        echo "  suim use <版本>        # 切换到指定版本"
-        echo "  suim uninstall <版本>   # 删除指定版本"
+        echo "Usage:"
+        echo "  suim list              # List installed versions"
+        echo "  suim version           # Show current version"
+        echo "  suim version-remote    # List available remote versions"
+        echo "  suim install <version> # Install specified version"
+        echo "  suim use <version>     # Switch to specified version"
+        echo "  suim uninstall <version> # Uninstall specified version"
+        echo "Example:"
+        echo "suim install testnet-v1.40.1"
+        echo "suim use testnet-v1.40.1"
+        echo "suim uninstall testnet-v1.40.1"
+        echo "suim versions | grep devnet"
         exit 1
         ;;
 esac
