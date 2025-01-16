@@ -7,9 +7,50 @@ CURRENT_VERSION_FILE="$SUIM_HOME/current"
 # Create necessary directories
 mkdir -p "$VERSIONS_DIR"
 
+
+get_os_arch() {
+    # 获取操作系统类型
+    local os=""
+    case "$(uname -s)" in
+        Darwin*)  os="macos" ;;
+        Linux*)   
+            if [ -f /etc/os-release ]; then
+                if grep -q "Ubuntu" /etc/os-release; then
+                    os="ubuntu"
+                else
+                    os="linux"  # 默认 linux
+                fi
+            else
+                os="linux"
+            fi
+            ;;
+        MINGW*|MSYS*|CYGWIN*) os="windows" ;;
+        *)        os="unknown" ;;
+    esac
+
+    # 获取架构
+    local arch=""
+    case "$(uname -m)" in
+        x86_64|amd64)  arch="x86_64" ;;
+        arm64|aarch64) 
+            if [ "$os" = "macos" ]; then
+                arch="arm64"
+            else
+                arch="aarch64"
+            fi
+            ;;
+        *)             arch="unknown" ;;
+    esac
+
+    # 输出格式化的结果
+    echo "${os}-${arch}"
+}
+
+
+
 # Get current system info
 get_system_info() {
-    echo "ubuntu-x86_64"
+    echo "$(get_os_arch)"
 }
 
 # Show current version
