@@ -5,13 +5,13 @@ Suim is a simple version management tool for Sui, supporting multi-version insta
 ## Quick Installation
 
 ```bash
-curl -o- https://raw.githubusercontent.com/yourusername/suim/main/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nextuser/suim/refs/heads/main/install.sh | bash
 ```
 
 or
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/yourusername/suim/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/nextuser/suim/refs/heads/main/install.sh | bash
 ```
 
 ## Usage

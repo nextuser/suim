@@ -31,6 +31,13 @@ suim install  mainnet-1.40.3
 根据从网站上下前执行环境,比如ubuntu的 linux x86_64 环境
 从  https://github.com/MystenLabs/sui/releases 下载版本 mainnet-1.40.3 对应的压缩包url 
 https://github.com/MystenLabs/sui/releases/download/mainnet-v1.40.3/sui-mainnet-v1.40.3-ubuntu-x86_64.tgz
+###
+bash 脚本获取系统环境变量,生成macos-arm64
+macos-x86_64
+ubuntu-aarch64
+ubuntu-x86_64
+windows-x86_64  之类的操作系统字样
+
 
 并且把压缩包tgz文件解压到了~/.suim/versions/mainnet-v1.40.3 目录.这个目录下有个可执行文件sui
 由于下载的文件比较大,下载的过程需要显示执行的进度
@@ -48,6 +55,11 @@ suim install mainnet-v1.40.1
 
 
 ```
+
+需要在使用 suim  use testnet-v1.42.1 的时候,自动将 当前版本 ~/.suim/versions/testnet-v1.42.1  添加到环境变量$PATH上
+当前sui环境在  cat ~/.suim/current  获得testnet-v1.42.1,拼凑出路径 ~/sui/versions/testnet-v1.42.1
+
+
 - 更换当前版本
 
 ```bash
