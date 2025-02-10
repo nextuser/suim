@@ -3,15 +3,8 @@
 SUIM_HOME="$HOME/.suim"
 VERSIONS_DIR="$SUIM_HOME/versions"
 CURRENT_VERSION_FILE="$SUIM_HOME/current"
-
-# Create necessary directories
+GITHUB_PROXY=https://gh.api.99988866.xyz/
 mkdir -p "$VERSIONS_DIR"
-
-# 添加环境变量配置
-SHELL_RC="$HOME/.bashrc"
-if [ -f "$HOME/.zshrc" ]; then
-    SHELL_RC="$HOME/.zshrc"
-fi
 
 get_os_arch() {
     # 获取操作系统类型
@@ -85,28 +78,50 @@ list_remote_versions() {
     sort -u -r
 }
 
+
+
 # Download and install specified version
 install_version() {
     local version=$1
+    shift  # Remove version from arguments
+    local use_proxy=false
+
+    # Check for --with-proxy flag
+    for arg in "$@"; do
+        if [ "$arg" = "--with-proxy" ]; then
+            use_proxy=true
+            break
+        fi
+    done
+
     local system_info=$(get_system_info)
-    local download_url="https://github.com/MystenLabs/sui/releases/download/${version}/sui-${version}-${system_info}.tgz"
+    local base_url="https://github.com/MystenLabs/sui/releases/download/${version}/sui-${version}-${system_info}.tgz"
     local target_dir="$VERSIONS_DIR/${version}"
     local temp_file="/tmp/sui-${version}.tgz"
 
-    # Check if version is already installed
+    # Check if already installed
     if [ -d "$target_dir" ]; then
         echo "Version ${version} is already installed"
         return 1
     fi
 
     echo "Downloading ${version}..."
-    wget -c --show-progress -O "$temp_file" "$download_url"
+    
+    # Set download URL based on proxy flag
+    local download_url="$base_url"
+    if [ "$use_proxy" = true ]; then
+        echo "Using proxy for faster download..."
+        download_url="https://gh.api.99988866.xyz/$base_url"
+    fi
+
+    wget --continue --show-progress -O "$temp_file" "$download_url"
 
     if [ $? -eq 0 ]; then
         mkdir -p "$target_dir"
         tar xzf "$temp_file" -C "$target_dir"
         rm "$temp_file"
-        echo "Installation complete: ${version}"
+        echo "Installation completed: ${version}"
+        use_version  "${version}"
     else
         echo "Download failed"
         rm -f "$temp_file"
@@ -126,8 +141,15 @@ use_version() {
     fi
 
     echo "$version" > "$CURRENT_VERSION_FILE"
+    
+    # Update environment variables
+    export SUI_VERSION_PATH="$VERSIONS_DIR/$(cat $CURRENT_VERSION_FILE)"
+    export PATH="$SUI_VERSION_PATH:$PATH"
+    
+    # Reload shell with new environment
     echo "Switched to version: ${version}"
-    source $SHELL_RC
+    echo "Reloading environment variables..."
+    exec $SHELL -l
 }
 
 # Uninstall specified version
@@ -161,11 +183,12 @@ case "$1" in
         list_remote_versions
         ;;
     "install")
-        if [ -z "$2" ]; then
+        shift  # Remove 'install' from arguments
+        if [ -z "$1" ]; then
             echo "Please specify version to install"
             exit 1
         fi
-        install_version "$2"
+        install_version "$@"  # Pass all remaining arguments
         ;;
     "use")
         if [ -z "$2" ]; then
@@ -185,12 +208,12 @@ case "$1" in
         echo "Usage:"
         echo "  suim list              # List installed versions"
         echo "  suim version           # Show current version"
-        echo "  suim versions    # List available remote versions"
-        echo "  suim install <version> # Install specified version"
+        echo "  suim versions          # List available remote versions"
+        echo "  suim install <version> [--with-proxy] # Install specified version"
         echo "  suim use <version>     # Switch to specified version"
         echo "  suim uninstall <version> # Uninstall specified version"
         echo "Example:"
-        echo "suim install testnet-v1.40.1"
+        echo "suim install testnet-v1.40.1 --with-proxy"
         echo "suim use testnet-v1.40.1"
         echo "suim uninstall testnet-v1.40.1"
         echo "suim versions | grep devnet"
