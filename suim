@@ -205,6 +205,8 @@ case "$1" in
         uninstall_version "$2"
         ;;
     *)
+        latest_testnet=`suim versions |grep -m1 testnet`
+        latest_mainnet=`suim versions |grep -m1 mainnet`
         echo "Usage:"
         echo "  suim list              # List installed versions"
         echo "  suim version           # Show current version"
@@ -213,10 +215,11 @@ case "$1" in
         echo "  suim use <version>     # Switch to specified version"
         echo "  suim uninstall <version> # Uninstall specified version"
         echo "Example:"
-        echo "suim install testnet-v1.40.1 --with-proxy"
+        echo "suim install ${latest_testnet} --with-proxy"
+        echo "suim install ${latest_mainnet} --with-proxy"
         echo "suim use testnet-v1.40.1"
         echo "suim uninstall testnet-v1.40.1"
-        echo "suim versions | grep devnet"
+        echo "suim versions | grep -m1 devnet"
         exit 1
         ;;
 esac
