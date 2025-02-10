@@ -85,6 +85,7 @@ install_version() {
     local version=$1
     shift  # Remove version from arguments
     local use_proxy=false
+    local proxy_url="https://gh.api.99988866.xyz"
 
     # Check for --with-proxy flag
     for arg in "$@"; do
@@ -110,8 +111,8 @@ install_version() {
     # Set download URL based on proxy flag
     local download_url="$base_url"
     if [ "$use_proxy" = true ]; then
-        echo "Using proxy for faster download..."
-        download_url="https://gh.api.99988866.xyz/$base_url"
+        echo "Using gh.api.99988866.xyz proxy for faster download..."
+        download_url="${proxy_url}/${base_url}"
     fi
 
     wget --continue --show-progress -O "$temp_file" "$download_url"
@@ -186,6 +187,7 @@ case "$1" in
         shift  # Remove 'install' from arguments
         if [ -z "$1" ]; then
             echo "Please specify version to install"
+            echo "Usage: suim install <version> [--with-proxy]"
             exit 1
         fi
         install_version "$@"  # Pass all remaining arguments
@@ -208,15 +210,14 @@ case "$1" in
         latest_testnet=`suim versions |grep -m1 testnet`
         latest_mainnet=`suim versions |grep -m1 mainnet`
         echo "Usage:"
-        echo "  suim list              # List installed versions"
-        echo "  suim version           # Show current version"
-        echo "  suim versions          # List available remote versions"
-        echo "  suim install <version> [--with-proxy] # Install specified version"
-        echo "  suim use <version>     # Switch to specified version"
-        echo "  suim uninstall <version> # Uninstall specified version"
+        echo "  suim list                        # List installed versions"
+        echo "  suim version                     # Show current version"
+        echo "  suim versions                    # List available remote versions"
+        echo "  suim install <version> [--with-proxy] # Install specified version with optional proxy"
+        echo "  suim use <version>               # Switch to specified version"
+        echo "  suim uninstall <version>         # Uninstall specified version"
         echo "Example:"
-        echo "suim install ${latest_testnet} --with-proxy"
-        echo "suim install ${latest_mainnet} --with-proxy"
+        echo "suim install testnet-v1.40.1 --with-proxy  # Install using gh.api.99988866.xyz proxy"
         echo "suim use testnet-v1.40.1"
         echo "suim uninstall testnet-v1.40.1"
         echo "suim versions | grep -m1 devnet"
