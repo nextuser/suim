@@ -7,6 +7,11 @@ CURRENT_VERSION_FILE="$SUIM_HOME/current"
 # Create necessary directories
 mkdir -p "$VERSIONS_DIR"
 
+# 添加环境变量配置
+SHELL_RC="$HOME/.bashrc"
+if [ -f "$HOME/.zshrc" ]; then
+    SHELL_RC="$HOME/.zshrc"
+fi
 
 get_os_arch() {
     # 获取操作系统类型
@@ -95,7 +100,7 @@ install_version() {
     fi
 
     echo "Downloading ${version}..."
-    wget --show-progress -O "$temp_file" "$download_url"
+    wget -c --show-progress -O "$temp_file" "$download_url"
 
     if [ $? -eq 0 ]; then
         mkdir -p "$target_dir"
@@ -122,6 +127,7 @@ use_version() {
 
     echo "$version" > "$CURRENT_VERSION_FILE"
     echo "Switched to version: ${version}"
+    source $SHELL_RC
 }
 
 # Uninstall specified version
