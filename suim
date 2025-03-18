@@ -85,7 +85,7 @@ install_version() {
     local version=$1
     shift  # Remove version from arguments
     local use_proxy=false
-    local proxy_url="https://gh.api.99988866.xyz"
+    local proxy_url="https://ghproxy.net/"
 
     # Check for --with-proxy flag
     for arg in "$@"; do
@@ -111,7 +111,7 @@ install_version() {
     # Set download URL based on proxy flag
     local download_url="$base_url"
     if [ "$use_proxy" = true ]; then
-        echo "Using gh.api.99988866.xyz proxy for faster download..."
+        echo "Using ${proxy_url} proxy for faster download..."
         download_url="${proxy_url}/${base_url}"
     fi
 
@@ -218,7 +218,7 @@ case "$1" in
         echo "  suim use <version>               # Switch to specified version"
         echo "  suim uninstall <version>         # Uninstall specified version"
         echo "Example:"
-        echo "suim install ${latest_testnet} "
+        echo "suim install ${latest_testnet} --with-proxy"
         echo "suim install ${latest_mainnet} "
         echo "suim versions | grep -m1 devnet"
         exit 1
