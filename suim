@@ -194,7 +194,8 @@ case "$1" in
         ;;
     "use")
         if [ -z "$2" ]; then
-            echo "Please specify version to use"
+            cat $CURRENT_VERSION_FILE
+            sui --version
             exit 1
         fi
         use_version "$2"
@@ -217,9 +218,8 @@ case "$1" in
         echo "  suim use <version>               # Switch to specified version"
         echo "  suim uninstall <version>         # Uninstall specified version"
         echo "Example:"
-        echo "suim install testnet-v1.40.1 --with-proxy  # Install using gh.api.99988866.xyz proxy"
-        echo "suim use testnet-v1.40.1"
-        echo "suim uninstall testnet-v1.40.1"
+        echo "suim install ${latest_testnet} "
+        echo "suim install ${latest_mainnet} "
         echo "suim versions | grep -m1 devnet"
         exit 1
         ;;

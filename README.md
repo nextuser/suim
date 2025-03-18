@@ -19,7 +19,7 @@ wget -qO- https://raw.githubusercontent.com/nextuser/suim/refs/heads/main/instal
 - `suim list` - List installed versions
 - `suim version` - Show current version
 - `suim version-remote` - List available remote versions
-- `suim install <version>` - Install specified version
+- `suim install <version>  [--with-proxy] ` - Install specified version
 - `suim use <version>` - Switch to specified version
 - `suim uninstall <version>` - Uninstall specified version
 

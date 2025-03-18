@@ -1,0 +1,20 @@
+--2025-01-16 10:11:41--  https://github.com/MystenLabs/sui/releases/download/devnet-v1.40.0/sui-devnet-v1.40.0-ubuntu-x86_64.tgz
+Resolving github.com (github.com)... 20.205.243.166
+Connecting to github.com (github.com)|20.205.243.166|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://objects.githubusercontent.com/github-production-release-asset-2e65be/426075845/afe3de66-75d3-413b-902a-8cb6fb920084?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250116T021142Z&X-Amz-Expires=300&X-Amz-Signature=90684d47015a7b11b3e2c619299a522ace701ff808b6645691cb71efb7af81e1&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dsui-devnet-v1.40.0-ubuntu-x86_64.tgz&response-content-type=application%2Foctet-stream [following]
+--2025-01-16 10:11:42--  https://objects.githubusercontent.com/github-production-release-asset-2e65be/426075845/afe3de66-75d3-413b-902a-8cb6fb920084?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250116T021142Z&X-Amz-Expires=300&X-Amz-Signature=90684d47015a7b11b3e2c619299a522ace701ff808b6645691cb71efb7af81e1&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dsui-devnet-v1.40.0-ubuntu-x86_64.tgz&response-content-type=application%2Foctet-stream
+Resolving objects.githubusercontent.com (objects.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.111.133, ...
+Connecting to objects.githubusercontent.com (objects.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 757274034 (722M) [application/octet-stream]
+Saving to: ‘/tmp/sui-devnet-v1.40.0.tgz’
+
+
+2025-01-16 11:29:02 (15.5 KB/s) - Connection closed at byte 73400320. Retrying.
+
+--2025-01-16 11:29:03--  (try: 2)  https://objects.githubusercontent.com/github-production-release-asset-2e65be/426075845/afe3de66-75d3-413b-902a-8cb6fb920084?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250116T021142Z&X-Amz-Expires=300&X-Amz-Signature=90684d47015a7b11b3e2c619299a522ace701ff808b6645691cb71efb7af81e1&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dsui-devnet-v1.40.0-ubuntu-x86_64.tgz&response-content-type=application%2Foctet-stream
+Connecting to objects.githubusercontent.com (objects.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 401 Unauthorized
+
+Username/Password Authentication Failed.

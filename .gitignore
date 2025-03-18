@@ -1,1 +1,3 @@
 *.tgz
+.history
+wgt-log
